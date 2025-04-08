@@ -27,7 +27,7 @@ print("Welcome to the UW Calculator Playground")
 //: For this latter set of operations, it is safe to assume that `["count"]` (with no additional arguments) is 0, `["avg"]` is also 0, and `["fact"]` is 0. `["1", "fact"]` should return 1, and `["0", "fact"]` should also return 1. (Yes, 0-factorial is 1. True story.)
 //: 
 func calculate(_ args: [String]) -> Int {
-    if args.count == 3{
+    if args.count == 3 {
         let first = Int(args[0]) ?? 0
         let op = args[1]
         let last = Int(args[2]) ?? 0
@@ -45,12 +45,95 @@ func calculate(_ args: [String]) -> Int {
         default:
             return 0
         }
+    } else {
+        let op = args[args.count - 1]
+        let index = args.count - 1
+        if (index == 0) {
+            return 0
+        }
+        switch op {
+        case "count":
+            return index
+        case "avg":
+            var sum = 0
+            var count = 0
+            for i in 0..<index {
+                sum += Int(args[i]) ?? 0
+                count += 1
+            }
+            return sum / count
+        case "fact":
+            if let num = Int(args[0]) {
+                if num == 0 || num == 1 {
+                    return 1
+                }
+                var result = 1
+                for i in 1...num{
+                    result *= i
+                }
+                return result
+            }
+        default:
+            return 0
+        }
     }
     return 0
 }
 
 func calculate(_ arg: String) -> Int {
-    
+    var exp = arg.split(separator: " ")
+    if exp.count == 3 {
+        let first = Int(exp[0]) ?? 0
+        let op = exp[1]
+        let last = Int(exp[2]) ?? 0
+        switch op {
+        case "+" :
+            return first + last
+        case "-":
+            return first - last
+        case "*":
+            return first * last
+        case "/":
+            return first / last
+        case "%":
+            return first % last
+        default:
+            return 0
+        }
+    } else {
+        let op = exp.last
+        let index = exp.count - 1
+        
+        if (index == 0) {
+            return 0
+        }
+        switch op {
+        case "count":
+            return index
+        case "avg":
+            var sum = 0
+            var count = 0
+            for i in 0..<index {
+                sum += Int(exp[i]) ?? 0
+                count += 1
+            }
+            return sum / count
+        case "fact":
+            if let num = Int(exp[0]) {
+                if num == 0 || num == 1 {
+                    return 1
+                }
+                var result = 1
+                for i in 1...num{
+                    result *= i
+                }
+                return result
+            }
+        default:
+            return 0
+        }
+    }
+    return 0
 }
 
 //: Below this are the test expressions/calls to verify if your code is correct.
@@ -104,7 +187,7 @@ calculate("5 fact") == 120
 //: Implement `calculate([String])` and `calculate(String)` to handle negative numbers. You need only make the tests below pass. (You do not need to worry about "fact"/factorial with negative numbers, for example.)
 //:
 //: This is worth 1 pt
-/*
+
 calculate(["2", "+", "-2"]) == 0
 calculate(["2", "-", "-2"]) == 4
 calculate(["2", "*", "-2"]) == -4
@@ -119,8 +202,7 @@ calculate("2 - -2") == 4
 calculate("-2 / 2") == -1
 
 calculate("1 -2 3 -4 5 count") == 5
-*/
- 
+
 //: Implement `calculate([String])` and `calculate(String)` to use 
 //: and return floating-point values. You need only make the tests 
 //: below pass. (Factorial of floating-point numbers doesn't make 
